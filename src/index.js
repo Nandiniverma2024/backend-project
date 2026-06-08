@@ -24,6 +24,8 @@ const app=express();
 ( async ()=> {
     try {
         await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`);
+        
+        // When need to listner for the errors before listen to th port then we can use app.on("error") to catch the error and log it to the console.
         app.on("error",(error)=>{
             console.log("ERROR:", error);
             throw error
