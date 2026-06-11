@@ -16,4 +16,12 @@ app.use(express.urlencoded({extended:true, limit:"16kb"}))
 app.use(express.static("public")) //Configuration to store files and folder
 app.use(cokkieParser()); //to access and send cokkies to browser with help of server
 
+
+// Routes Import
+import userRouter from './routes/user.routes.js';
+
+// Routes Declaration
+app.use("/api/v1/users",userRouter); // users se => user.routers pr control pass hoga
+
+
 export { app };
