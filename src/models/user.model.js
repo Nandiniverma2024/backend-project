@@ -21,13 +21,13 @@ const userSchema=new Schema(
             lowercase:true,
             trim:true,
         },
-        fullname:{
+        fullName:{
             type:String,
             required:true,
             trim:true,
             index:true,
         },
-        avtar:{
+        avatar:{
             type:String, //cloudinary url
             required:true,
         },
@@ -54,15 +54,15 @@ const userSchema=new Schema(
 );
 
 userSchema.pre("save", async function(next){
-    if(!this.isModified("password")){ //so that password will not modified in each minor update
+    if(!this.isModified("passWord")){ //so that password will not modified in each minor update
         return next();
     } 
-    this.passWord=bcrypt.hash(this.passWord,10)
+    this.passWord=await bcrypt.hash(this.passWord,10)
     next()
 })
 
-userSchema.methods.isPasswordCorrect=async function(password){
-    return await bcrypt.compare(password, this.passWord);
+userSchema.methods.isPasswordCorrect=async function(passWord){
+    return await bcrypt.compare(passWord, this.passWord);
 }
 
 userSchema.methods.generateAccessToken=function(){
@@ -70,8 +70,8 @@ userSchema.methods.generateAccessToken=function(){
         {
             _id:this._id,
             email:this.email,
-            username:this.userName,
-            fullname:this.fullname,
+            userName:this.userName,
+            fullName:this.fullName,
             // key : comming from DB
         },
         process.env.ACCESS_TOKON_SECRET,
